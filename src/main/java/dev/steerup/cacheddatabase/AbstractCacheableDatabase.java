@@ -3,10 +3,7 @@ package dev.steerup.cacheddatabase;
 import dev.steerup.cacheddatabase.util.Keys;
 import dev.steerup.cacheddatabase.util.Result;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -39,6 +36,15 @@ public abstract class AbstractCacheableDatabase<Element> {
 
     public void cache(Element element, Keys keys) {
         this.cache.put(keys, new Result<>(element));
+    }
+
+    public void cache(Element element) {
+        this.cache.put(Keys.formatObject(element), new Result<>(element));
+    }
+
+    @SafeVarargs
+    public final void cache(Element... elements) {
+        Arrays.stream(elements).forEach(this::cache);
     }
 
     public void clear() {

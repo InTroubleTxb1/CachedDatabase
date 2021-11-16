@@ -1,10 +1,7 @@
 package dev.steerup.cacheddatabase.util;
 
-import lombok.AllArgsConstructor;
-
 import java.util.Optional;
 
-@AllArgsConstructor
 public class Result<Element> {
 
     private final Element element;

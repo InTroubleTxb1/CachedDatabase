@@ -1,9 +1,9 @@
 package dev.steerup.cacheddatabase.util;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import dev.steerup.cacheddatabase.annotation.Key;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class Keys {
@@ -65,9 +65,30 @@ public class Keys {
         return true;
     }
 
+    public static Keys formatObject(Object object) {
+        Keys builder = Keys.builder();
+        Class<?> c = object.getClass();
+
+        Arrays.stream(c.getDeclaredMethods())
+                .filter(method -> method.isAnnotationPresent(Key.class))
+                .forEach(method -> {
+                    Key annotation = method.getAnnotation(Key.class);
+                    String key = annotation.value();
+                    try {
+                        Object value = method.invoke(object);
+                        builder.parameter(key, value);
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                });
+        return builder;
+    }
+
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Keys)) return false;
+        if (!(obj instanceof Keys)) {
+            return false;
+        }
 
         Keys keys = (Keys) obj;
 

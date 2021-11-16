@@ -3,6 +3,7 @@ package me.txb1.database;
 import dev.steerup.cacheddatabase.AbstractCacheableDatabase;
 import dev.steerup.cacheddatabase.util.Keys;
 import dev.steerup.cacheddatabase.util.Result;
+import me.txb1.User;
 
 public class UserDatabase extends AbstractCacheableDatabase<User> {
 
